@@ -13,6 +13,10 @@ module.exports = function complete() {
     );
   });
 
+  if (failed.length && passed.length) {
+    this.log('  -');
+  }
+
   failed.forEach((test) => {
     if (test.type === 'isFailure') {
       this.log(
@@ -32,7 +36,8 @@ module.exports = function complete() {
   if (failed.length) {
     let perc = Math.round((failed.length / this.tests.length) * 100) + '%';
     this.log(
-      '\n     -'.red + ' Failed: ' + failed.length + '/' + this.tests.length + ' (' + perc.cyan + ')'
+      padRight('\n     Failures ', 64, '.'.grey) + padLeft(' ' + (failed.length + '/' + this.tests.length).cyan, 26, '.'.grey) +
+      padRight('\n     Failure Rate', 75, '.'.grey) + padLeft(' ' + perc.cyan, 4, '.'.grey)
     );
   } else {
     this.log(
@@ -43,6 +48,6 @@ module.exports = function complete() {
   }
 
   this.log(
-    '       Completed in ' + time.cyan + 's'.cyan + '\n'
+    padRight('     Completed in ', 69, '.'.grey) + padLeft(' ' + (time + 's').cyan, 20, '.'.grey) + '\n'
   );
 };
