@@ -55,7 +55,7 @@ Test.prototype.compare = function (result) {
     if (this.type === 'isEqual') {
       this.passed = this.value[0] === this.value[1];
     } else if (this.type === 'isDeepEqual') {
-      this.passed = _.equals(this.value[0], this.value[0]);
+      this.passed = _.isEqual(this.value[0], this.value[0]);
     } else if (this.type === 'isNotEqual') {
       this.passed = this.value[0] !== this.value[1];
     } else if (this.type === 'isFailure') {
