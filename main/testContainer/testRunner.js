@@ -33,6 +33,16 @@ Test.prototype.isDeepEqual = function (right) {
   this.queue.push(right);
 };
 
+Test.prototype.isNotEqual = function (right) {
+  this.type = 'isNotEqual';
+  this.queue.push(right);
+};
+
+Test.prototype.isFailure = function (right) {
+  this.type = 'isFailure';
+  this.queue.push(right);
+};
+
 Test.prototype.this = function (left) {
   this.queue.push(left);
   return this;
@@ -46,6 +56,10 @@ Test.prototype.compare = function (result) {
       this.passed = this.value[0] === this.value[1];
     } else if (this.type === 'isDeepEqual') {
       this.passed = _.equals(this.value[0], this.value[0]);
+    } else if (this.type === 'isNotEqual') {
+      this.passed = this.value[0] !== this.value[1];
+    } else if (this.type === 'isFailure') {
+      this.passed = this.value[0] instanceof Error;
     }
     this.resolve();
   }
@@ -63,13 +77,11 @@ Test.prototype.run = function () {
     });
   }
 
-  maybePromise(this.queue[0])
-    .then(this.compare)
-    .catch(this.compare);
-
-  maybePromise(this.queue[1])
-    .then(this.compare)
-    .catch(this.compare);
+  this.queue.forEach(f => {
+    maybePromise(f)
+      .then(this.compare)
+      .catch(this.compare);
+  });
 };
 
 module.exports = function testRunner(name) {

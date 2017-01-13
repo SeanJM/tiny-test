@@ -14,11 +14,19 @@ module.exports = function complete() {
   });
 
   failed.forEach((test) => {
-    this.log(
-      padLeft(test.index + '. ', 6, ' ').red + padRight(test.name + ' ', 66, '.').red + ' FAILED'.red +
-      '\n     Expected: '.red + typeToString(test.value[0]) +
-      '\n     Received: '.red + typeToString(test.value[1]).split(/\n/).join('\n           ').red
-    );
+    if (test.type === 'isFailure') {
+      this.log(
+        padLeft(test.index + '. ', 6, ' ').red + padRight(test.name + ' ', 66, '.').red + ' FAILED'.red +
+        '\n     Expected: Error'.red +
+        '\n     Received: '.red + typeToString(test.value[0]).split(/\n/).join('\n           ').red
+      );
+    } else {
+      this.log(
+        padLeft(test.index + '. ', 6, ' ').red + padRight(test.name + ' ', 66, '.').red + ' FAILED'.red +
+        '\n     Expected: '.red + typeToString(test.value[0]) +
+        '\n     Received: '.red + typeToString(test.value[1]).split(/\n/).join('\n           ').red
+      );
+    }
   });
 
   if (failed.length) {
@@ -30,7 +38,7 @@ module.exports = function complete() {
     this.log(
       this.int_passed > 1
         ? '\n     +'.green + ' All ' + this.tests.length + ' tests passed'
-        : '\n     + '.green + '1 test passed'
+        : '\n     + '.green + this.tests.length + ' test passed'
     );
   }
 
