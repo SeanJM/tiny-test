@@ -69,7 +69,7 @@ Test.prototype.run = function () {
   function maybePromise(f) {
     return new Promise(function (resolve) {
       let x = f();
-      if (x.then) {
+      if (x && x.then) {
         return x;
       } else {
         resolve(x);
