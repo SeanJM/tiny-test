@@ -21,14 +21,14 @@ module.exports = function complete() {
     if (test.type === 'isFailure') {
       this.log(
         padLeft(test.index + '. ', 6, ' ').red + padRight(test.name + ' ', 66, '.').red + ' FAILED'.red +
-        '\n     Expected: Error'.red +
-        '\n     Received: '.red + typeToString(test.value[0]).split(/\n/).join('\n           ').red
+        '\n     Received: Error'.red +
+        '\n     Expected: '.red + typeToString(test.value[0]).split(/\n/).join('\n           ').red
       );
     } else {
       this.log(
         padLeft(test.index + '. ', 6, ' ').red + padRight(test.name + ' ', 66, '.').red + ' FAILED'.red +
-        '\n     Expected: '.red + typeToString(test.value[0]) +
-        '\n     Received: '.red + typeToString(test.value[1]).split(/\n/).join('\n           ').red
+        '\n     Received: '.red + typeToString(test.value[0]).split(/\n/).join('\n           ').red +
+        '\n     Expected: '.red + typeToString(test.value[1]).split(/\n/).join('\n           ').red
       );
     }
   });
@@ -36,8 +36,8 @@ module.exports = function complete() {
   if (failed.length) {
     let perc = Math.round((failed.length / this.tests.length) * 100) + '%';
     this.log(
-      padRight('\n     Failures ', 64, '.'.grey) + padLeft(' ' + (failed.length + '/' + this.tests.length).cyan, 26, '.'.grey) +
-      padRight('\n     Failure Rate', 75, '.'.grey) + padLeft(' ' + perc.cyan, 4, '.'.grey)
+      padRight('\n     Failures ', 61, '.'.grey) + padLeft(' ' + (failed.length + '/' + this.tests.length).cyan, 26, '.'.grey) +
+      padRight('\n     Failure Rate ', 75, '.'.grey) + padLeft(' ' + perc.cyan, 4, '.'.grey)
     );
   } else {
     this.log(
@@ -48,6 +48,6 @@ module.exports = function complete() {
   }
 
   this.log(
-    padRight('     Completed in ', 69, '.'.grey) + padLeft(' ' + (time + 's').cyan, 20, '.'.grey) + '\n'
+    padRight('     Completed in ', 67, '.'.grey) + padLeft(' ' + (time + 's').cyan, 20, '.'.grey) + '\n'
   );
 };
