@@ -5,7 +5,7 @@ function padLeft(a, n, c) {
 
   a = s;
 
-  s = s.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+  s = s.replace(/\x1b/g, '').replace(/\[(36|39)m/g, '');
 
   return a.length > n
     ? a

@@ -36,8 +36,8 @@ module.exports = function complete() {
   if (failed.length) {
     let perc = Math.round((failed.length / this.tests.length) * 100) + '%';
     console.log(
-      padRight('\n     Failures ', 61, '.'.grey) + padLeft(' ' + (failed.length + '/' + this.tests.length).cyan, 26, '.'.grey) +
-      padRight('\n     Failure Rate ', 71, '.'.grey) + padLeft(' ' + perc.cyan, 5, '.'.grey)
+      padRight('\n     Failures ', 55, '.'.grey) + padLeft(' ' + (failed.length + '/' + this.tests.length).cyan, 26, '.'.grey) +
+      padRight('\n     Failure Rate ', 66, '.'.grey) + padLeft(' ' + perc.cyan, 15, '.'.grey)
     );
   } else {
     console.log(
@@ -48,6 +48,6 @@ module.exports = function complete() {
   }
 
   console.log(
-    padRight('     Completed in ', 67, '.'.grey) + padLeft(' ' + (time + 's').cyan, 20, '.'.grey) + '\n'
+    padRight('     Completed in ', 60, '.'.grey) + padLeft(' ' + (time + 's').cyan, 20, '.'.grey) + '\n'
   );
 };
