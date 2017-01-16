@@ -48,6 +48,6 @@ module.exports = function complete() {
   }
 
   console.log(
-    padRight('     Completed in ', 60, '.'.grey) + padLeft(' ' + (time + 's').cyan, 20, '.'.grey) + '\n'
+    padRight('     Completed in ', 59, '.'.grey) + padLeft(' ' + (time + 's').cyan, 20, '.'.grey) + '\n'
   );
 };
