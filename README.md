@@ -1,6 +1,11 @@
 ## TinyTest
 ### A small testing library
 
+## Installation
+```
+npm -i -S tiny-test
+```
+
 ## Usage
 ```javascript
 tinyTest(function (test, load) {
