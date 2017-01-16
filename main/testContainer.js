@@ -18,7 +18,6 @@ function TestContainer(callback) {
 
 TestContainer.prototype.complete = require('./testContainer/complete');
 TestContainer.prototype.load = require('./testContainer/load');
-TestContainer.prototype.log = require('./testContainer/log');
 TestContainer.prototype.logError = require('./testContainer/logError');
 TestContainer.prototype.silence = require('./testContainer/silence');
 TestContainer.prototype.testRunner = require('./testContainer/testRunner');
