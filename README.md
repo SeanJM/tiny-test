@@ -6,6 +6,8 @@
 npm -i -S tiny-test
 ```
 
+![Alt text](https://github.com/SeanJM/tiny-test/blob/master/screenshot-1.jpg)
+
 ## Usage
 ```javascript
 tinyTest(function (test, load) {
