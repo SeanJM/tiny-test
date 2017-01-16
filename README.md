@@ -36,7 +36,7 @@ tinyTest(function (test, load) {
   // isFalure
   test(opts.name)
     .isFailure(function () {
-      return false;
+      throw 'Error';
     });
 
   load();
