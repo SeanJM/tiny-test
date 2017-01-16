@@ -3,8 +3,6 @@ function TestContainer(callback) {
 
   this.tests = [];
 
-  this.isSilent = false;
-
   this.complete = this.complete.bind(this);
   this.testRunner = this.testRunner.bind(this);
   this.load = this.load.bind(this);
