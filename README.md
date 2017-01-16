@@ -6,7 +6,10 @@
 npm -i -S tiny-test
 ```
 
+## Clean messaging
+
 ![Alt text](https://github.com/SeanJM/tiny-test/blob/master/screenshot-1.jpg)
+![Alt text](https://github.com/SeanJM/tiny-test/blob/master/screenshot-2.jpg)
 
 ## Usage
 ```javascript
