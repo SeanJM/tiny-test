@@ -13,7 +13,7 @@ npm -i -S tiny-test
 
 ## Usage
 ```javascript
-tinyTest(function (test, load) {
+tinyTest(function (test) {
   // Equality
   test(opts.name)
     .this(function () {
@@ -43,7 +43,5 @@ tinyTest(function (test, load) {
     .isFailure(function () {
       throw 'Error';
     });
-
-  load();
 });
 ```
