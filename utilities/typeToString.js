@@ -28,10 +28,8 @@ function typeToString(value) {
     return shortObject(value);
   } else if (typeof value === 'string') {
     return '\"' + value + '\"';
-  } else if (typeof value === 'boolean') {
-    return value.toString();
   } else {
-    return value;
+    return value.toString();
   }
 }
 

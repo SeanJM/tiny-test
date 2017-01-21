@@ -48,7 +48,7 @@ module.exports = function complete() {
   }
 
   console.log(
-    padRight('     Completed in ', 59, '.'.grey) + padLeft(' ' + (time + 's').cyan, 20, '.'.grey) + '\n'
+    padRight(padLeft('Completed in ', 19, ' '), 59, '.'.grey) + padLeft(' ' + (time + 's').cyan, 20, '.'.grey) + '\n'
   );
 
   this.resolve(this);

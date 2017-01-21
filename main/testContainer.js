@@ -11,8 +11,7 @@ function TestContainer(callback) {
     then : []
   };
 
-  callback(this.testRunner);
-  this.load();
+  callback(this.testRunner, this.load);
 }
 
 TestContainer.prototype.complete = require('./testContainer/complete');
