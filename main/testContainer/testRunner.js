@@ -10,18 +10,12 @@ function Test(name) {
   this.passed = false;
 
   this.index = 0;
-  this.compare = this.compare.bind(this);
 
   this.subscribers = {
     then : [],
     catch : []
   };
 }
-
-Test.prototype.then = require('../shared/then');
-Test.prototype.catch = require('../shared/catch');
-Test.prototype.reject = require('../shared/reject');
-Test.prototype.resolve = require('../shared/resolve');
 
 Test.prototype.isEqual = function (right) {
   this.type = 'isEqual';
@@ -48,40 +42,47 @@ Test.prototype.this = function (left) {
   return this;
 };
 
-Test.prototype.compare = function (result) {
-  this.value.push(result);
-
-  if (this.value.length === this.queue.length) {
-    if (this.type === 'isEqual') {
-      this.passed = this.value[0] === this.value[1];
-    } else if (this.type === 'isDeepEqual') {
-      this.passed = _.isEqual(this.value[0], this.value[1]);
-    } else if (this.type === 'isNotEqual') {
-      this.passed = this.value[0] !== this.value[1];
-    } else if (this.type === 'isFailure') {
-      this.passed = this.value[0] instanceof Error;
-    }
-    this.resolve();
-  }
-};
-
 Test.prototype.run = function () {
   function maybePromise(f) {
-    return new Promise(function (resolve) {
-      let x = f();
-      if (x && x.then) {
-        return x;
-      } else {
-        resolve(x);
+    return new Promise(function (resolve, reject) {
+      try {
+        let x = f();
+        if (x && x.then) {
+          x.then(resolve);
+        } else {
+          resolve(x);
+        }
+      } catch (e) {
+        reject(e);
       }
     });
   }
 
-  this.queue.forEach(f => {
-    maybePromise(f)
-      .then(this.compare)
-      .catch(this.compare);
-  });
+  return new Promise((resolve) => {
+    function compare (result) {
+      this.value.push(result);
+
+      if (this.value.length === this.queue.length) {
+        if (this.type === 'isEqual') {
+          this.passed = this.value[0] === this.value[1];
+        } else if (this.type === 'isDeepEqual') {
+          this.passed = _.isEqual(this.value[0], this.value[1]);
+        } else if (this.type === 'isNotEqual') {
+          this.passed = this.value[0] !== this.value[1];
+        } else if (this.type === 'isFailure') {
+          this.passed = this.value[0] instanceof Error;
+        }
+        resolve();
+      }
+    }
+
+    compare = compare.bind(this);
+    this.queue.forEach(f => {
+      maybePromise(f)
+        .then(compare)
+        .catch((a) => { console.log(a); compare(a); });
+    });
+  }).catch(a => a);
 };
 
 module.exports = function testRunner(name) {

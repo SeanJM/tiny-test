@@ -8,7 +8,8 @@ function TestContainer(callback) {
   this.load = this.load.bind(this);
 
   this.subscribers = {
-    then : []
+    then : [],
+    catch : []
   };
 
   callback(this.testRunner, this.load);

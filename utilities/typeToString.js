@@ -4,7 +4,7 @@ function shortObject(obj) {
   var shorty = [];
 
   for (var k in obj) {
-    shorty.push(k + ' : ' + Object.prototype.toString.call(obj[k]));
+    shorty.push(k + ' : ' + typeToString(obj[k]));
   }
 
   shorty = '{ ' + shorty.join(', ') + ' }';
