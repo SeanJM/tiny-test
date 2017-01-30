@@ -59,29 +59,39 @@ Test.prototype.run = function () {
   }
 
   return new Promise((resolve) => {
-    function compare (result) {
-      this.value.push(result);
+    this.value = [];
 
-      if (this.value.length === this.queue.length) {
-        if (this.type === 'isEqual') {
-          this.passed = this.value[0] === this.value[1];
-        } else if (this.type === 'isDeepEqual') {
-          this.passed = _.isEqual(this.value[0], this.value[1]);
-        } else if (this.type === 'isNotEqual') {
-          this.passed = this.value[0] !== this.value[1];
-        } else if (this.type === 'isFailure') {
-          this.passed = this.value[0] instanceof Error;
-        }
-        resolve();
+    function each(i) {
+      if (this.queue[i]) {
+        maybePromise(this.queue[i])
+          .then((a) => {
+            this.value.push(a); each(i + 1);
+          })
+          .catch((a) => {
+            this.value.push(a); each(i + 1);
+          });
+      } else {
+        compare();
       }
     }
 
+    function compare () {
+      if (this.type === 'isEqual') {
+        this.passed = this.value[0] === this.value[1];
+      } else if (this.type === 'isDeepEqual') {
+        this.passed = _.isEqual(this.value[0], this.value[1]);
+      } else if (this.type === 'isNotEqual') {
+        this.passed = this.value[0] !== this.value[1];
+      } else if (this.type === 'isFailure') {
+        this.passed = this.value[0] instanceof Error;
+      }
+      resolve();
+    }
+
     compare = compare.bind(this);
-    this.queue.forEach(f => {
-      maybePromise(f)
-        .then(compare)
-        .catch((a) => { console.log(a); compare(a); });
-    });
+    each = each.bind(this);
+
+    each(0);
   }).catch(a => a);
 };
 
