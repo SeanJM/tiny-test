@@ -2,6 +2,52 @@ const padLeft = require('../../utilities/padLeft');
 const padRight = require('../../utilities/padRight');
 const typeToString = require('../../utilities/typeToString');
 
+function logDiff(test) {
+  let diff = difference([], test.value[0], test.value[1]);
+
+  let string  = [
+    padLeft(test.index + '. ', 6, ' ').red + padRight(test.name + ' ', 66, '.').red + ' FAILED'.red
+  ];
+
+  diff.forEach(a => {
+    string.push([
+      '     Index   : '.red + a.path.red,
+      '     Expected: '.red + a.left.red,
+      '     Received: '.red + a.right.red,
+    ].join('\n'));
+  });
+
+  console.log(string.join('\n\n'));
+}
+
+function difference(path, a, b) {
+  var diff = [];
+
+  if (typeof a !== 'undefined' && typeof b !== 'undefined') {
+    for (var k in a) {
+      if (typeof b[k] === 'object') {
+        diff = diff.concat(
+          difference(path.concat(k), b[k], a[k])
+        );
+      } else if (b[k] !== a[k]) {
+        diff.push({
+          path : path.concat(k).join('.'),
+          left : typeToString(b[k]),
+          right : typeToString(a[k])
+        });
+      }
+    }
+  } else {
+    diff.push({
+      path : path.length ? path.join('') : 'ROOT',
+      left : typeToString(a),
+      right : typeToString(b)
+    });
+  }
+
+  return diff;
+}
+
 module.exports = function complete() {
   var passed = this.tests.filter(a => a.passed);
   var failed = this.tests.filter(a => !a.passed);
@@ -25,11 +71,20 @@ module.exports = function complete() {
         '\n     Expected: '.red + typeToString(test.value[0]).split(/\n/).join('\n           ').red
       );
     } else {
-      console.log(
-        padLeft(test.index + '. ', 6, ' ').red + padRight(test.name + ' ', 66, '.').red + ' FAILED'.red +
-        '\n     Received: '.red + typeToString(test.value[0]).split(/\n/).join('\n           ').red +
-        '\n     Expected: '.red + typeToString(test.value[1]).split(/\n/).join('\n           ').red
-      );
+      if (
+        !(test.value[0] instanceof Error)
+        && !(test.value[1] instanceof Error)
+        && typeof test.value[0] === 'object'
+        && typeof test.value[1] === 'object'
+      ) {
+        logDiff(test);
+      } else {
+        console.log(
+          padLeft(test.index + '. ', 6, ' ').red + padRight(test.name + ' ', 66, '.').red + ' FAILED'.red +
+          '\n     Received: '.red + typeToString(test.value[0]).split(/\n/).join('\n           ').red +
+          '\n     Expected: '.red + typeToString(test.value[1]).split(/\n/).join('\n           ').red
+        );
+      }
     }
   });
 

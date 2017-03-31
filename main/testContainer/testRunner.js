@@ -75,7 +75,7 @@ Test.prototype.run = function () {
       }
     }
 
-    function compare () {
+    function compare() {
       if (this.type === 'isEqual') {
         this.passed = this.value[0] === this.value[1];
       } else if (this.type === 'isDeepEqual') {
