@@ -21,10 +21,15 @@ function logDiff(test) {
 }
 
 function difference(path, a, b) {
-  var diff = [];
+  let diff = [];
+  let t = a;
+
+  if (Object.keys(b).length > Object.keys(a).length) {
+    t = b;
+  }
 
   if (typeof a !== 'undefined' && typeof b !== 'undefined') {
-    for (var k in a) {
+    for (let k in t) {
       if (typeof b[k] === 'object') {
         diff = diff.concat(
           difference(path.concat(k), b[k], a[k])
@@ -49,8 +54,8 @@ function difference(path, a, b) {
 }
 
 module.exports = function complete() {
-  var passed = this.tests.filter(a => a.passed);
-  var failed = this.tests.filter(a => !a.passed);
+  let passed = this.tests.filter(a => a.passed);
+  let failed = this.tests.filter(a => !a.passed);
   let time = ((new Date() - this.startTime) / 1000).toString();
 
   passed.forEach((test) => {
