@@ -10,7 +10,6 @@
   "dependencies": {
     "colors": "^1.1.2",
     "eslint": "^3.13.1",
-    "lodash": "^4.17.4",
     "match-file-utility": "^3.4.0"
   }
 }

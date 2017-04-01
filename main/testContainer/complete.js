@@ -1,6 +1,7 @@
 const padLeft = require('../../utilities/padLeft');
 const padRight = require('../../utilities/padRight');
 const typeToString = require('../../utilities/typeToString');
+const difference = require('../shared/difference');
 
 function logDiff(test) {
   let diff = difference([], test.value[0], test.value[1]);
@@ -14,8 +15,8 @@ function logDiff(test) {
   diff.slice(0, max).forEach(a => {
     string.push([
       '     Index   : '.red + a.path.red,
-      '     Expected: '.red + a.left.red,
-      '     Received: '.red + a.right.red,
+      '     Expected: '.red + typeToString(a.right).red,
+      '     Received: '.red + typeToString(a.left).red,
     ].join('\n'));
   });
 
@@ -24,42 +25,6 @@ function logDiff(test) {
   }
 
   console.log(string.join('\n\n'));
-}
-
-function difference(path, a, b) {
-  let diff = [];
-
-  let t = (
-    typeof a === 'object'
-    && typeof b === 'object'
-    && Object.keys(b).length > Object.keys(a).length
-      ? b
-      : a
-  );
-
-  if (typeof a !== 'undefined' && typeof b !== 'undefined') {
-    for (let k in t) {
-      if (typeof b[k] === 'object') {
-        diff = diff.concat(
-          difference(path.concat(k), b[k], a[k])
-        );
-      } else if (b[k] !== a[k]) {
-        diff.push({
-          path : path.concat(k).join('.'),
-          left : typeToString(b[k]),
-          right : typeToString(a[k])
-        });
-      }
-    }
-  } else {
-    diff.push({
-      path : path.length ? path.join('.') : 'ROOT',
-      left : typeToString(a),
-      right : typeToString(b)
-    });
-  }
-
-  return diff;
 }
 
 module.exports = function complete() {
