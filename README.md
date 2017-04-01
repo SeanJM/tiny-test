@@ -11,6 +11,9 @@ npm -i -S tiny-test
 ![Alt text](https://github.com/SeanJM/tiny-test/blob/master/screenshot-1.jpg)
 ![Alt text](https://github.com/SeanJM/tiny-test/blob/master/screenshot-2.jpg)
 
+## Diffs
+![Alt text](https://github.com/SeanJM/tiny-test/blob/master/screenshot-3.jpg)
+
 ## Usage
 ```javascript
 tinyTest(function (test) {
