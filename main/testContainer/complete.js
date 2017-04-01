@@ -9,7 +9,9 @@ function logDiff(test) {
     padLeft(test.index + '. ', 6, ' ').red + padRight(test.name + ' ', 66, '.').red + ' FAILED'.red
   ];
 
-  diff.forEach(a => {
+  let max = 4;
+
+  diff.slice(0, max).forEach(a => {
     string.push([
       '     Index   : '.red + a.path.red,
       '     Expected: '.red + a.left.red,
@@ -17,16 +19,23 @@ function logDiff(test) {
     ].join('\n'));
   });
 
+  if (diff.length > max) {
+    string.push(('\n     (' + (diff.length - max).toString() + '+ hidden)').red);
+  }
+
   console.log(string.join('\n\n'));
 }
 
 function difference(path, a, b) {
   let diff = [];
-  let t = a;
 
-  if (Object.keys(b).length > Object.keys(a).length) {
-    t = b;
-  }
+  let t = (
+    typeof a === 'object'
+    && typeof b === 'object'
+    && Object.keys(b).length > Object.keys(a).length
+      ? b
+      : a
+  );
 
   if (typeof a !== 'undefined' && typeof b !== 'undefined') {
     for (let k in t) {
