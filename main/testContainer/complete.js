@@ -53,7 +53,7 @@ function difference(path, a, b) {
     }
   } else {
     diff.push({
-      path : path.length ? path.join('') : 'ROOT',
+      path : path.length ? path.join('.') : 'ROOT',
       left : typeToString(a),
       right : typeToString(b)
     });
