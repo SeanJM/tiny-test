@@ -1,11 +1,22 @@
 require('colors');
 
 function shortObject(obj) {
-  let s = JSON.stringify(obj);
-  if (s.length > 59) {
-    return s.substring(0, 59) + '...';
+  let max = 7;
+  let s = JSON.stringify(obj, null, '  ').split('\n').slice(0, max);
+  let n = s.length - 1;
+
+  s = s.map(a => {
+    if (a.length > 59) {
+      a = a.substring(0, 59) + '...'
+    }
+    return a;
+  });
+
+  if (s.length === max) {
+    s.push('...');
   }
-  return s;
+
+  return s.join('\n');
 }
 
 function typeToString(value) {

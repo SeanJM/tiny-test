@@ -17,6 +17,14 @@ function logDiff(test) {
       '     Index   : '.red + a.path.red,
       '     Received: '.red + typeToString(a.right).red,
       '     Expected: '.red + typeToString(a.left).red,
+      '     Siblings: '.red + typeToString(a.object.left)
+        .split('\n')
+        .map((a, i) => i > 0
+            ? '     ' + a
+            : a
+        )
+        .join('\n')
+        .red,
     ].join('\n'));
   });
 

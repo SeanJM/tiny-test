@@ -19,15 +19,23 @@ module.exports = function difference(path, a, b) {
         diff.push({
           path : path.concat(k).join('.'),
           left : b[k],
-          right : a[k]
+          right : a[k],
+          object : {
+            left : b,
+            right : a
+          }
         });
       }
     }
   } else {
     diff.push({
       path : path.length ? path.join('.') : 'ROOT',
-      left : a,
-      right : b
+      left : b,
+      right : a,
+      object : {
+        left : b,
+        right : a
+      }
     });
   }
 
