@@ -15,8 +15,8 @@ function logDiff(test) {
   diff.slice(0, max).forEach(a => {
     string.push([
       '     Index   : '.red + a.path.red,
-      '     Expected: '.red + typeToString(a.right).red,
-      '     Received: '.red + typeToString(a.left).red,
+      '     Received: '.red + typeToString(a.right).red,
+      '     Expected: '.red + typeToString(a.left).red,
     ].join('\n'));
   });
 
@@ -24,7 +24,7 @@ function logDiff(test) {
     string.push(('\n     (' + (diff.length - max).toString() + '+ hidden)').red);
   }
 
-  console.log(string.join('\n\n'));
+  console.log(string.join('\n\n') + '\n');
 }
 
 module.exports = function complete() {
