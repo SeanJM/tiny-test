@@ -12,19 +12,23 @@ function logDiff(test) {
 
   let max = 4;
 
-  diff.slice(0, max).forEach(a => {
-    string.push([
-      '     Index   : '.red + a.path.red,
-      '     Received: '.red + typeToString(a.right).red,
-      '     Expected: '.red + typeToString(a.left).red,
-      '     Siblings: '.red + typeToString(a.object.left)
+  function indent(a) {
+    return typeToString(a)
         .split('\n')
         .map((a, i) => i > 0
             ? '     ' + a
             : a
         )
         .join('\n')
-        .red,
+        .red;
+  }
+
+  diff.slice(0, max).forEach(a => {
+    string.push([
+      '     Index   : '.red + a.path.red,
+      '     Received: '.red + indent(a.right),
+      '     Expected: '.red + indent(a.left),
+      '     Siblings: '.red + indent(a.object.left),
     ].join('\n'));
   });
 
