@@ -22,6 +22,8 @@ function shortObject(obj) {
 function typeToString(value) {
   if (typeof value === 'undefined') {
     return 'undefined'.grey;
+  } else if (value == null) {
+    return 'null'.grey;
   } else if (value instanceof Error) {
     return value.stack.toString();
   } else if (typeof value === 'object') {
