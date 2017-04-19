@@ -11,7 +11,7 @@ module.exports = function difference(path, a, b) {
 
   if (typeof a !== 'undefined' && typeof b !== 'undefined') {
     for (let k in t) {
-      if (typeof b[k] === 'object') {
+      if (typeof b[k] === 'object' && b[k] != null) {
         diff = diff.concat(
           difference(path.concat(k), b[k], a[k])
         );
