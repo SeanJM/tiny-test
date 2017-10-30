@@ -11,20 +11,22 @@ module.exports = function difference(path, a, b) {
 
   if (typeof a !== 'undefined' && typeof b !== 'undefined') {
     for (let k in t) {
-      if (t.hasOwnProperty(k) && typeof b[k] === 'object' && b[k] != null) {
-        diff = diff.concat(
-          difference(path.concat(k), b[k], a[k])
-        );
-      } else if (b[k] !== a[k]) {
-        diff.push({
-          path : path.concat(k).join('.'),
-          left : b[k],
-          right : a[k],
-          object : {
-            left : b,
-            right : a
-          }
-        });
+      if (t.hasOwnProperty(k)) {
+        if (typeof b[k] === 'object' && b[k] != null) {
+          diff = diff.concat(
+            difference(path.concat(k), b[k], a[k])
+          );
+        } else if (b[k] !== a[k]) {
+          diff.push({
+            path : path.concat(k).join('.'),
+            left : b[k],
+            right : a[k],
+            object : {
+              left : b,
+              right : a
+            }
+          });
+        }
       }
     }
   } else {
