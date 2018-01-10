@@ -43,54 +43,35 @@ Test.prototype.this = function (left) {
 };
 
 Test.prototype.run = function () {
-  function maybePromise(f) {
-    return new Promise(function (resolve, reject) {
-      try {
-        let x = f();
-        if (x && x.then) {
-          x.then(resolve);
-        } else {
-          resolve(x);
-        }
-      } catch (e) {
-        reject(e);
-      }
-    });
-  }
-
   return new Promise((resolve) => {
     this.value = [];
 
     function each(i) {
       if (this.queue[i]) {
-        maybePromise(this.queue[i])
-          .then((a) => {
-            this.value.push(a); each(i + 1);
+        Promise.resolve(this.queue[i]())
+          .then(a => {
+            this.value.push(a);
+            each(i + 1);
           })
-          .catch((a) => {
-            this.value.push(a); each(i + 1);
+          .catch(a => {
+            this.value.push(a);
+            each(i + 1);
           });
       } else {
-        compare();
+        if (this.type === 'isEqual') {
+          this.passed = this.value[0] === this.value[1];
+        } else if (this.type === 'isDeepEqual') {
+          this.passed = difference([], this.value[0], this.value[1]).length === 0;
+        } else if (this.type === 'isNotEqual') {
+          this.passed = this.value[0] !== this.value[1];
+        } else if (this.type === 'isFailure') {
+          this.passed = this.value[0] instanceof Error;
+        }
+        resolve();
       }
     }
 
-    function compare() {
-      if (this.type === 'isEqual') {
-        this.passed = this.value[0] === this.value[1];
-      } else if (this.type === 'isDeepEqual') {
-        this.passed = difference([], this.value[0], this.value[1]).length === 0;
-      } else if (this.type === 'isNotEqual') {
-        this.passed = this.value[0] !== this.value[1];
-      } else if (this.type === 'isFailure') {
-        this.passed = this.value[0] instanceof Error;
-      }
-      resolve();
-    }
-
-    compare = compare.bind(this);
     each = each.bind(this);
-
     each(0);
   }).catch(a => a);
 };
