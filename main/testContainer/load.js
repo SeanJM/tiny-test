@@ -6,7 +6,8 @@ module.exports = function load() {
   function each(i) {
     try {
       if (self.tests[i]) {
-        self.tests[i].run()
+        self.tests[i]
+          .run()
           .then(() => each(i + 1))
           .catch(() => console.log(e));
       } else {

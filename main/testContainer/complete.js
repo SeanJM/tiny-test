@@ -6,7 +6,7 @@ const difference = require('../shared/difference');
 function logDiff(test) {
   let diff = difference([], test.value[0], test.value[1]);
 
-  let string  = [
+  let string = [
     padLeft(test.index + '. ', 6, ' ').red + padRight(test.name + ' ', 66, '.').red + ' FAILED'.red
   ];
 
@@ -14,13 +14,13 @@ function logDiff(test) {
 
   function indent(a) {
     return typeToString(a)
-        .split('\n')
-        .map((a, i) => i > 0
-            ? '     ' + a
-            : a
-        )
-        .join('\n')
-        .red;
+      .split('\n')
+      .map((a, i) => i > 0
+        ? '     ' + a
+        : a
+      )
+      .join('\n')
+      .red;
   }
 
   diff.slice(0, max).forEach(a => {
@@ -96,6 +96,4 @@ module.exports = function complete() {
   console.log(
     padRight(padLeft('Completed in ', 19, ' '), 59, '.'.grey) + padLeft(' ' + (time + 's').cyan, 20, '.'.grey) + '\n'
   );
-
-  this.resolve(this);
 };
