@@ -1,5 +1,9 @@
 const difference = require("./difference");
 
+function maybeFunction(a) {
+  return typeof a === "function" ? a() : a;
+}
+
 module.exports = class TestRunner {
   constructor(name, left) {
     this.name = name;
@@ -9,60 +13,34 @@ module.exports = class TestRunner {
     this.index = 0;
   }
 
-  isEqual(right) {
+  isAny(right, predicate) {
     let leftResult;
 
-    Promise.resolve(this.left())
+    Promise.resolve(maybeFunction(this.left))
       .then((left) => {
         leftResult = left;
-        return right();
+        return maybeFunction(right);
       })
       .then((right) => this.resolve({
         index: this.index,
         name: this.name,
         right: right,
         left: leftResult,
-        passed: right === leftResult
+        passed: predicate(leftResult, right)
       }))
       .catch(this.reject);
+  }
+
+  isEqual(right) {
+    this.isAny(right, (left, right) => left === right);
   }
 
   isDeepEqual(right) {
-    let leftResult;
-
-    Promise.resolve(this.left())
-      .then((left) => {
-        leftResult = left;
-        return right();
-      })
-      .then((right) => this.resolve({
-        index: this.index,
-        name: this.name,
-        right: right,
-        left: leftResult,
-        passed: difference([], leftResult, right).length === 0
-      }))
-      .catch(this.reject);
+    this.isAny(right, (left, right) => !difference([], left, right).length);
   }
 
   isNotEqual(right) {
-    let leftResult;
-
-    Promise.resolve(this.left())
-      .then((left) => {
-        leftResult = left;
-        return right();
-      })
-      .then((right) => {
-        this.resolve({
-          index: this.index,
-          name: this.name,
-          right: right,
-          left: leftResult,
-          passed: right !== leftResult
-        });
-      })
-      .catch(this.reject);
+    this.isAny(right, (left, right) => left !== right);
   }
 
   onComplete(callback) {
