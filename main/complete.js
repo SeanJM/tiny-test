@@ -55,7 +55,6 @@ module.exports = function complete(tests) {
   }
 
   failed.forEach((test) => {
-    console.log(test);
     if (typeof test.left === "object" && typeof test.right === "object") {
       logDiff(test);
     } else {
