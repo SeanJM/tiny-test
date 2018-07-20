@@ -1,11 +1,11 @@
 function padRight(a, n, c) {
-  var s = typeof a === 'string'
+  var s = typeof a === "string"
     ? a
     : a.toString();
 
   a = s;
 
-  s = s.replace(/\x1b/g, '').replace(/\[(36|39)m/g, '');
+  s = s.replace(/\\x1b/g, "").replace(/\[(36|39)m/g, "");
 
   return a.length > n
     ? a

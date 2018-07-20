@@ -18,33 +18,27 @@ npm -i -S tiny-test
 ```javascript
 tinyTest(function (test) {
   // Equality
-  test(opts.name)
-    .this(function () {
-      return true;
-    }).isEqual(function () {
+  test("My test name", function () {
+    return true;
+  })
+    .isEqual(function () {
       return true;
     });
 
   // Deep Equality
-  test(opts.name)
-    .this(function () {
-      return [ { isTrue : true } ];
-    }).isDeepEqual(function () {
-      return [ { isTrue : true } ];
+  test("My deep test name", function () {
+    return [{ isTrue : true }];
+  })
+    .isDeepEqual(function () {
+      return [{ isTrue : true }];
     });
 
   // Not Equal
-  test(opts.name)
-    .this(function () {
-      return true;
-    }).isNotEqual(function () {
+  test("My not equal test", function () {
+    return true;
+  })
+    .isNotEqual(function () {
       return false;
-    });
-
-  // isFalure
-  test(opts.name)
-    .isFailure(function () {
-      throw 'Error';
     });
 });
 ```

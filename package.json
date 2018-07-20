@@ -3,13 +3,15 @@
   "description": "A testing library.",
   "version": "0.9.6",
   "scripts": {
-    "test": "test.js"
+    "test": "node test.js"
   },
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^5.1.0",
+    "eslint-plugin-import": "^2.13.0"
+  },
   "dependencies": {
     "colors": "^1.1.2",
-    "eslint": "^3.13.1",
     "match-file-utility": "^3.4.0"
   }
 }
