@@ -1,7 +1,7 @@
 const difference = require("./difference");
 
-function maybeFunction(a) {
-  return typeof a === "function" ? a() : a;
+function maybeFunction(a, b) {
+  return typeof a === "function" ? a(b) : a;
 }
 
 module.exports = class TestRunner {
@@ -19,7 +19,7 @@ module.exports = class TestRunner {
     Promise.resolve(maybeFunction(this.left))
       .then((left) => {
         leftResult = left;
-        return maybeFunction(right);
+        return maybeFunction(right, left);
       })
       .then((right) => this.resolve({
         index: this.index,
