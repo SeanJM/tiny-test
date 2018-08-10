@@ -32,5 +32,16 @@ tinyTest(function (test, load) {
       };
     });
 
+    test("Error", function () {
+      throw "Error";
+    })
+      .isDeepEqual(function () {
+        return {
+          a: {
+            name: "test"
+          }
+        };
+      });
+
   load();
 });
