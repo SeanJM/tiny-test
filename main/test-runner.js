@@ -49,7 +49,6 @@ module.exports = class TestRunner {
   }
 
   isDeepEqual(right) {
-    console.log(this.name, "isDeepEqual");
     this.isAny(right, (left, right) => !difference([], left, right).length);
   }
 
