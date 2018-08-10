@@ -10,25 +10,38 @@ module.exports = class TestRunner {
     this.left = left;
     this.resolve = null;
     this.reject = null;
+    this.error = null;
     this.index = 0;
   }
 
   isAny(right, predicate) {
     let leftResult;
 
-    Promise.resolve(maybeFunction(this.left))
-      .then((left) => {
-        leftResult = left;
-        return maybeFunction(right, left);
+    return new Promise((resolve) => {
+      Promise.resolve(maybeFunction(this.left))
+        .then((left) => {
+          leftResult = left;
+          return maybeFunction(right, left);
+        })
+        .then((right) => resolve({
+          index: this.index,
+          name: this.name,
+          right: right,
+          left: leftResult,
+          passed: predicate(leftResult, right)
+        }));
+    })
+      .catch((error) => {
+        this.resolve({
+          index: this.index,
+          name: this.name,
+          error: new Error(error),
+          right: null,
+          left: leftResult,
+          passed: false
+        });
       })
-      .then((right) => this.resolve({
-        index: this.index,
-        name: this.name,
-        right: right,
-        left: leftResult,
-        passed: predicate(leftResult, right)
-      }))
-      .catch(this.reject);
+      .then((res) => this.resolve(res));
   }
 
   isEqual(right) {
@@ -36,6 +49,7 @@ module.exports = class TestRunner {
   }
 
   isDeepEqual(right) {
+    console.log(this.name, "isDeepEqual");
     this.isAny(right, (left, right) => !difference([], left, right).length);
   }
 
