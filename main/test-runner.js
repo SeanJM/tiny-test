@@ -35,7 +35,7 @@ module.exports = class TestRunner {
         this.resolve({
           index: this.index,
           name: this.name,
-          error: new Error(error),
+          error,
           right: null,
           left: leftResult,
           passed: false
